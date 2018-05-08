@@ -1,0 +1,5 @@
+wx:
+  url: https://api.weixin.qq.com/sns/jscode2session
+  AppID: wx9eb0d34f6ad7f52d
+  AppSecret: 873d6d54a56f1749d16b50205c927651
+  userAllot: 5

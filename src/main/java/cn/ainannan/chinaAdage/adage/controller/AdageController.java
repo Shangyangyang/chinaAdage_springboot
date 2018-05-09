@@ -10,8 +10,10 @@ import cn.ainannan.base.result.ResultGen;
 import cn.ainannan.base.result.ResultObject;
 import cn.ainannan.chinaAdage.adage.bean.Adage;
 import cn.ainannan.chinaAdage.adage.bean.BrowseRecord;
+import cn.ainannan.chinaAdage.adage.bean.Collect;
 import cn.ainannan.chinaAdage.adage.service.AdageService;
 import cn.ainannan.chinaAdage.adage.service.BrowseRecordService;
+import cn.ainannan.chinaAdage.adage.service.CollectService;
 import cn.ainannan.sys.user.bean.User;
 import cn.ainannan.sys.user.service.UserService;
 import cn.ainannan.utils.DateUtil;
@@ -25,6 +27,8 @@ public class AdageController {
 	private UserService userService;
 	@Autowired
 	private BrowseRecordService browseRecordService;
+	@Autowired
+	private CollectService collectService;
 	
 	@RequestMapping("getByUser")
 	public ResultObject getByUser(Adage adage){
@@ -61,10 +65,25 @@ public class AdageController {
 		return ResultGen.genSuccessResult(resultList.get(0));
 	}
 	
+	/**
+	 * 浏览记录的保存操作
+	 * @param br
+	 * @return
+	 */
 	@RequestMapping("addBrowseRecord")
 	public ResultObject addBrowseRecord(BrowseRecord br){
-		// 浏览记录保存
 		browseRecordService.save(br);
+		return ResultGen.genSuccessResult();
+	}
+	
+	/**
+	 * 收藏谚语的操作
+	 * @param br
+	 * @return
+	 */
+	@RequestMapping("addCollect")
+	public ResultObject addCollect(Collect coolect){
+		collectService.save(coolect);
 		return ResultGen.genSuccessResult();
 	}
 	

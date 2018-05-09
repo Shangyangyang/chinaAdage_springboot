@@ -27,6 +27,13 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping("updateLoginDate")
+	public ResultObject updateLoginDate(User user) {
+		System.out.println(user);
+		// userService.save(user);
+		return ResultGen.genSuccessResult();
+	}
+	
 	@RequestMapping("login")
 	public ResultObject list(String code){
 		StringBuffer buffer = new StringBuffer();

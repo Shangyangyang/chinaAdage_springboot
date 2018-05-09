@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ainannan.chinaAdage.adage.mapper.CollectMapper" >
+    <sql id="Collect_Column_List" >
+        a.id as "id",
+        a.adage_id as "adage.id",
+        a.user_id as "user.id",
+        a.create_user as "createUser.id", 
+        a.create_date as "createDate", 
+        a.update_user as "updateUser.id", 
+        a.update_date as "updateDate", 
+        a.del_flag as "delFlag"
+    </sql>
+    
+    <select id="get" resultType="Collect">
+		SELECT 
+			<include refid="Collect_Column_List"/>
+		FROM collect a
+		WHERE a.id = #{id}
+	</select>
+
+    <select id="findList" resultType="Collect">
+        SELECT 
+       	<include refid="Collect_Column_List"/>
+        FROM collect a
+        <where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="adage != null and adage.id != null and adage.id != ''">
+				AND a.adage_id = #{adage.id}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="createDateStart != null">
+				and a.create_date &gt;= #{createDateStart}
+			</if>
+		</where>
+    </select>
+        
+    <insert id="insert">
+    	insert into collect(
+    		id,
+    		adage_id,
+    		user_id,
+    		create_user,
+    		create_date,
+    		update_user,
+    		update_date,
+    		del_flag
+    	) values(
+    		#{id},
+    		#{adage.id},
+    		#{user.id},
+    		#{createUser.id},
+    		#{createDate},
+    		#{updateUser.id},
+    		#{updateDate},
+    		#{delFlag}
+    	)
+    </insert>
+    
+    <update id="update">
+		UPDATE collect	
+		<trim prefix="SET" suffixOverrides=","> 
+			<if test="adage != null and adage.id != null">
+				adage_id = #{adage.id},
+			</if>
+			<if test="user != null and user.id != null">
+				user_id = #{user.id},
+			</if>
+			<if test="updateUser != null and updateUser.id != null">
+				update_user = #{updateUser.id},
+			</if>	
+			<if test="updateDate != null">
+				update_date = #{updateDate},
+			</if>	
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE collect SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

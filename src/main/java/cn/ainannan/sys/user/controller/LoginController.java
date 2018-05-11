@@ -8,7 +8,9 @@ import java.net.URL;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.ainannan.base.result.ResultGen;
@@ -28,9 +30,12 @@ public class LoginController {
 	private UserService userService;
 	
 	@RequestMapping("updateLoginDate")
-	public ResultObject updateLoginDate(User user) {
-		System.out.println(user);
-		// userService.save(user);
+	public ResultObject updateLoginDate(@RequestBody(required=true)User user) {
+		if(user == null) {
+			return ResultGen.genFailResult("未登录");
+		}
+		userService.save(user);
+		
 		return ResultGen.genSuccessResult();
 	}
 	

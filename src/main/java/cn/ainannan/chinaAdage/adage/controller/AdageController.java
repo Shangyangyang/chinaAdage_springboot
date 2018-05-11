@@ -94,8 +94,8 @@ public class AdageController {
 	}
 	
 	@RequestMapping("save")
-	public ResultObject save(Adage consumeOption){
-		adageService.save(consumeOption);
+	public ResultObject save(Adage adage){
+		adageService.save(adage);
 		return ResultGen.genSuccessResult();
 	}
 	

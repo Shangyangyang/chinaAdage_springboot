@@ -9,11 +9,38 @@ public class User extends BaseBean<User> {
 
 	private String wxId;
 	private String name;
-	private Integer allocation;
+	private Integer allocation;	// 分配额度
+	private Integer goldCoin;	// 积分
+	private Integer level;		// 等级
+	private Integer collect;	// 收藏数
 	private String state;
 	private Date lastLogin;
 	
 	
+	public Integer getGoldCoin() {
+		return goldCoin;
+	}
+
+	public void setGoldCoin(Integer goldCoin) {
+		this.goldCoin = goldCoin;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public Integer getCollect() {
+		return collect;
+	}
+
+	public void setCollect(Integer collect) {
+		this.collect = collect;
+	}
+
 	public User() {
 		super();
 	}

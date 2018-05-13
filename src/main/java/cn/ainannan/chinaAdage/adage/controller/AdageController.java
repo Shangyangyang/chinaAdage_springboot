@@ -30,6 +30,20 @@ public class AdageController {
 	@Autowired
 	private CollectService collectService;
 	
+
+	@RequestMapping("getUserCollectGoldCoin")
+	public ResultObject getUserCollectGoldCoin(User user){
+		// 获取积分
+		user = userService.get(user);
+		// 获取收藏数
+		Collect collect = new Collect();
+		collect.setUser(user);
+		user.setCollect(collectService.findList(collect).size());
+		
+		return ResultGen.genSuccessResult(user);
+	}
+	
+	
 	@RequestMapping("getByUser")
 	public ResultObject getByUser(Adage adage){
 		/*

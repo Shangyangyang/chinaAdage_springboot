@@ -7,6 +7,8 @@
         a.wx_id as "wxId", 
         a.allocation as "allocation", 
         a.last_login as "lastLogin", 
+        a.gold_coin as "goldCoin",
+        a.level as "level",
         a.state as "state", 
         a.create_user as "createUser.id", 
         a.create_date as "createDate", 
@@ -58,6 +60,8 @@
     		wx_id,
     		allocation,
     		last_login,
+    		gold_coin,
+    		level,
     		state,
     		create_user,
     		create_date,
@@ -70,6 +74,8 @@
     		#{wxId},
     		#{allocation},
     		#{lastLogin},
+    		#{goldCoin},
+    		#{level},
     		#{state},
     		#{createUser.id},
     		#{createDate},
@@ -93,6 +99,12 @@
 			</if>
 			<if test="lastLogin != null">
 				last_login = #{lastLogin},
+			</if>
+			<if test="goldCoin != null">
+				gold_coin = #{goldCoin},
+			</if>
+			<if test="level != null">
+				level = #{level},
 			</if>
 			<if test="state != null">
 				state = #{state},

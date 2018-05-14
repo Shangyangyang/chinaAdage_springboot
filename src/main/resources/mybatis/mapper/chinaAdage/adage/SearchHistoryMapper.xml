@@ -19,6 +19,19 @@
 		WHERE a.id = #{id}
 	</select>
 
+    <select id="findListToSeven" resultType="SearchHistory">
+        SELECT 
+       	<include refid="SearchHistory_Column_List"/>
+        FROM search_history a
+        <where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="content != null">
+				and a.content = #{content}
+			</if>
+		</where>
+		limit 0,7
+    </select>
+        
     <select id="findList" resultType="SearchHistory">
         SELECT 
        	<include refid="SearchHistory_Column_List"/>

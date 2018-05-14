@@ -19,18 +19,25 @@ public class SearchHistoryController {
 	private SearchHistoryService shService;
 	
 	@RequestMapping("getHotList")
-	public ResultObject getHotList(){
-		
-		return ResultGen.genSuccessResult();
-	}
-	
-	@RequestMapping("getHotList")
 	public ResultObject getHotList(SearchHistory sh){
 		
+		return ResultGen.genSuccessResult(shService.findListToSeven(sh));
+	}
+	
+	@RequestMapping("saveSearchHistory")
+	public ResultObject saveSearchHistory(SearchHistory sh){
+		sh.setContent(sh.getContent().trim());
 		List<SearchHistory> shList = shService.findList(sh);
-		if(shList.size() == 0) {
-			
+		if(shList.size() > 0) {
+			sh = shList.get(0);
+		} else {
+			sh.setCount(0);
 		}
+		
+		sh.setCount(sh.getCount() + 1);
+		
+		shService.save(sh);
+		
 		return ResultGen.genSuccessResult();
 	}
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ainannan.chinaAdage.adage.mapper.SearchHistoryMapper" >
+    <sql id="SearchHistory_Column_List" >
+        a.id as "id",
+        a.content as "content",
+        a.count as "count",
+        a.create_user as "createUser.id", 
+        a.create_date as "createDate", 
+        a.update_user as "updateUser.id", 
+        a.update_date as "updateDate", 
+        a.del_flag as "delFlag"
+    </sql>
+    
+    <select id="get" resultType="SearchHistory">
+		SELECT 
+			<include refid="SearchHistory_Column_List"/>
+		FROM search_history a
+		WHERE a.id = #{id}
+	</select>
+
+    <select id="findList" resultType="SearchHistory">
+        SELECT 
+       	<include refid="SearchHistory_Column_List"/>
+        FROM search_history a
+        <where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="content != null">
+				and a.content = #{content}
+			</if>
+		</where>
+    </select>
+        
+    <insert id="insert">
+    	insert into search_history(
+    		id,
+    		content,
+    		count,
+    		create_user,
+    		create_date,
+    		update_user,
+    		update_date,
+    		del_flag
+    	) values(
+    		#{id},
+    		#{content},
+    		#{count},
+    		#{createUser.id},
+    		#{createDate},
+    		#{updateUser.id},
+    		#{updateDate},
+    		#{delFlag}
+    	)
+    </insert>
+    
+    <update id="update">
+		UPDATE search_history	
+		<trim prefix="SET" suffixOverrides=","> 
+			<if test="content != null">
+				content = #{content},
+			</if>
+			<if test="count != null">
+				count = #{count},
+			</if>
+			<if test="updateUser != null and updateUser.id != null">
+				update_user = #{updateUser.id},
+			</if>	
+			<if test="updateDate != null">
+				update_date = #{updateDate},
+			</if>	
+			<if test="delFlag != null">
+				del_flag = #{delFlag},
+			</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE search_history SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

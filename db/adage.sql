@@ -5,6 +5,7 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS adage;
 DROP TABLE IF EXISTS browse_record;
 DROP TABLE IF EXISTS collect;
+DROP TABLE IF EXISTS search_history;
 DROP TABLE IF EXISTS sys_user;
 DROP TABLE IF EXISTS vote;
 
@@ -89,6 +90,28 @@ CREATE TABLE collect
 );
 
 
+CREATE TABLE search_history
+(
+	-- 主键
+	id varchar(32) NOT NULL COMMENT '主键',
+	-- 搜索内容
+	context varchar(100) COMMENT '搜索内容',
+	-- 计数
+	count int COMMENT '计数',
+	-- 创建者
+	create_user varchar(32) COMMENT '创建者',
+	-- 创建时间
+	create_date datetime COMMENT '创建时间',
+	-- 更新者
+	update_user varchar(32) COMMENT '更新者',
+	-- 更新时间
+	update_date datetime COMMENT '更新时间',
+	-- 删除标志
+	del_flag varchar(2) COMMENT '删除标志',
+	PRIMARY KEY (id)
+);
+
+
 CREATE TABLE sys_user
 (
 	-- 主键
@@ -107,6 +130,10 @@ CREATE TABLE sys_user
 	state varchar(2) COMMENT '用户状态
 1已启用
 2禁止登录',
+	-- 金币
+	gold_coin int COMMENT '金币',
+	-- 等级
+	level int COMMENT '等级',
 	-- 创建者
 	create_user varchar(32) COMMENT '创建者',
 	-- 创建时间

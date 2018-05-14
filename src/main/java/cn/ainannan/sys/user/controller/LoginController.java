@@ -87,10 +87,15 @@ public class LoginController {
 		search.setWxId(result.getOpenid());
 		
 		User resultUser = userService.getByWxId(search);
+		/*
+		 * 新建用户，初始化参数。
+		 */
 		if(resultUser == null) {
 			resultUser = new User();
 			resultUser.setAllocation(conf.getUserAllot());
 			resultUser.setWxId(search.getWxId());
+			resultUser.setGoldCoin(0);
+			resultUser.setLevel(1);
 			resultUser.setLastLogin(new Date());
 			resultUser.setState("1");
 			userService.save(resultUser);

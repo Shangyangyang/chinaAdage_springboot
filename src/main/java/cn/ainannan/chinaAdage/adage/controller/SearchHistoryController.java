@@ -1,7 +1,5 @@
 package cn.ainannan.chinaAdage.adage.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,22 +20,5 @@ public class SearchHistoryController {
 	public ResultObject getHotList(SearchHistory sh){
 		
 		return ResultGen.genSuccessResult(shService.findListToSeven(sh));
-	}
-	
-	@RequestMapping("saveSearchHistory")
-	public ResultObject saveSearchHistory(SearchHistory sh){
-		sh.setContent(sh.getContent().trim());
-		List<SearchHistory> shList = shService.findList(sh);
-		if(shList.size() > 0) {
-			sh = shList.get(0);
-		} else {
-			sh.setCount(0);
-		}
-		
-		sh.setCount(sh.getCount() + 1);
-		
-		shService.save(sh);
-		
-		return ResultGen.genSuccessResult();
 	}
 }

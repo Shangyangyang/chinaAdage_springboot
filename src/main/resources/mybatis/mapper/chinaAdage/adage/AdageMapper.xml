@@ -42,8 +42,16 @@
 		FROM adage a
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="param != null and param.id != null and param.id != ''">
+			<if test="adage != null and adage != ''">
+				AND a.adage like concat('%',#{adage},'%')
+			</if>
+			<if test='param != null and param.id != null and param.id != "" and inFlag == "1"'>
 				AND a.id NOT IN (
+					SELECT br.adage_id FROM browse_record br WHERE br.user_id = #{param.id}
+				)
+			</if>
+			<if test='param != null and param.id != null and param.id != "" and inFlag eq "2"'>
+				AND a.id IN (
 					SELECT br.adage_id FROM browse_record br WHERE br.user_id = #{param.id}
 				)
 			</if>

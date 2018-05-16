@@ -9,13 +9,26 @@
         a.create_date as "createDate", 
         a.update_user as "updateUser.id", 
         a.update_date as "updateDate", 
-        a.del_flag as "delFlag"
+        a.del_flag as "delFlag",
+        adage.id as "adage.id",
+        adage.adage as "adage.adage",
+        adage.outline as "adage.outline", 
+        adage.detail as "adage.detail", 
+        adage.types as "adage.types", 
+        adage.season as "adage.season", 
+        adage.upvote as "adage.upvote",
+        adage.downvote as "adage.downvote"
+    </sql>
+    
+    <sql id="leftjoin_Column" >
+       	left join adage adage on adage.id = a.adage_id and adage.del_flag = '0'
     </sql>
     
     <select id="get" resultType="Collect">
 		SELECT 
 			<include refid="Collect_Column_List"/>
 		FROM collect a
+		<include refid="leftjoin_Column"/>
 		WHERE a.id = #{id}
 	</select>
 
@@ -23,6 +36,7 @@
         SELECT 
        	<include refid="Collect_Column_List"/>
         FROM collect a
+        <include refid="leftjoin_Column"/>
         <where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="adage != null and adage.id != null and adage.id != ''">

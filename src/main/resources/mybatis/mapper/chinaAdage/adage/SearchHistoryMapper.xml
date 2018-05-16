@@ -5,6 +5,7 @@
         a.id as "id",
         a.content as "content",
         a.count as "count",
+        a.state as "state",
         a.create_user as "createUser.id", 
         a.create_date as "createDate", 
         a.update_user as "updateUser.id", 
@@ -24,7 +25,8 @@
        	<include refid="SearchHistory_Column_List"/>
         FROM search_history a
         <where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} and a.state = '1' 
+			and LENGTH(a.content) &gt; 3 and LENGTH(a.content) &lt; 21
 			<if test="content != null">
 				and a.content = #{content}
 			</if>
@@ -41,6 +43,9 @@
 			<if test="content != null">
 				and a.content = #{content}
 			</if>
+			<if test="state != null">
+				and a.state = #{state}
+			</if>
 		</where>
     </select>
         
@@ -49,6 +54,7 @@
     		id,
     		content,
     		count,
+    		state,
     		create_user,
     		create_date,
     		update_user,
@@ -58,6 +64,7 @@
     		#{id},
     		#{content},
     		#{count},
+    		#{state},
     		#{createUser.id},
     		#{createDate},
     		#{updateUser.id},
@@ -74,6 +81,9 @@
 			</if>
 			<if test="count != null">
 				count = #{count},
+			</if>
+			<if test="state != null">
+				state = #{state},
 			</if>
 			<if test="updateUser != null and updateUser.id != null">
 				update_user = #{updateUser.id},

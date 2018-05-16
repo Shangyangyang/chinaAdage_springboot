@@ -15,6 +15,7 @@ public class Adage extends BaseBean<Adage> {
 	private Integer upvote;
 	private Integer downvote;
 	private User param;
+	private String inFlag; // 控制IN 还是 NOT IN 的开关，1是NOT IN，2是IN。
 
 	public String getAdage() {
 		return adage;
@@ -78,6 +79,14 @@ public class Adage extends BaseBean<Adage> {
 
 	public void setDownvote(Integer downvote) {
 		this.downvote = downvote;
+	}
+
+	public String getInFlag() {
+		return inFlag;
+	}
+
+	public void setInFlag(String inFlag) {
+		this.inFlag = inFlag;
 	}
 
 }

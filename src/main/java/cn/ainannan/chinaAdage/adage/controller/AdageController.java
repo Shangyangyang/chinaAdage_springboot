@@ -11,9 +11,11 @@ import cn.ainannan.base.result.ResultObject;
 import cn.ainannan.chinaAdage.adage.bean.Adage;
 import cn.ainannan.chinaAdage.adage.bean.BrowseRecord;
 import cn.ainannan.chinaAdage.adage.bean.Collect;
+import cn.ainannan.chinaAdage.adage.bean.SearchHistory;
 import cn.ainannan.chinaAdage.adage.service.AdageService;
 import cn.ainannan.chinaAdage.adage.service.BrowseRecordService;
 import cn.ainannan.chinaAdage.adage.service.CollectService;
+import cn.ainannan.chinaAdage.adage.service.SearchHistoryService;
 import cn.ainannan.sys.user.bean.User;
 import cn.ainannan.sys.user.service.UserService;
 import cn.ainannan.utils.DateUtil;
@@ -29,8 +31,38 @@ public class AdageController {
 	private BrowseRecordService browseRecordService;
 	@Autowired
 	private CollectService collectService;
+	@Autowired
+	private SearchHistoryService shService;
 	
-
+	/**
+	 * 搜索模块，通过内容搜索。
+	 * @param user
+	 * @param content
+	 * @return
+	 */
+	@RequestMapping("searchList")
+	public ResultObject searchList(Adage adage){
+		if(null == adage.getAdage() || "".equals(adage.getAdage().trim())) {
+			return ResultGen.genFailResult("关键字不能为空！");
+		}
+		if(adage.getParam() == null || adage.getParam().getId() == null || "null".equals(adage.getParam().getId())) {
+			return ResultGen.genFailResult("登录失败，请退出重新登录");
+		}
+		adage.setAdage(adage.getAdage().trim());
+		// 搜索记录的保存
+		shService.addHistory(new SearchHistory(adage.getAdage()));
+		// 查询		
+		adage.setInFlag("2"); 	// in
+		List<Adage> adageList = adageService.findListByUser(adage);
+		
+		return ResultGen.genSuccessResult(adageList);
+	}
+	
+	/**
+	 * 我的模块，获取积分和收藏个数。
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping("getUserCollectGoldCoin")
 	public ResultObject getUserCollectGoldCoin(User user){
 		// 获取积分
@@ -43,7 +75,11 @@ public class AdageController {
 		return ResultGen.genSuccessResult(user);
 	}
 	
-	
+	/**
+	 * 通过用户ID获取谚语，过滤已浏览过的。
+	 * @param adage
+	 * @return
+	 */
 	@RequestMapping("getByUser")
 	public ResultObject getByUser(Adage adage){
 		/*
@@ -67,6 +103,7 @@ public class AdageController {
 		// 超额的操作
 		if(resultNum >= curUser.getAllocation()) return ResultGen.genFailResult("今日额度已经用完");
 		
+		adage.setInFlag("1"); 	// not in
 		List<Adage> resultList = adageService.findListByUser(adage);
 		
 		// 没有未读的操作
@@ -96,10 +133,18 @@ public class AdageController {
 	 * @return
 	 */
 	@RequestMapping("addCollect")
-	public ResultObject addCollect(Collect coolect){
-		collectService.save(coolect);
+	public ResultObject addCollect(Collect colect){
+		collectService.save(colect);
 		return ResultGen.genSuccessResult();
 	}
+	
+	@RequestMapping("getCollectListByUser")
+	public ResultObject getCollectListByUser(Collect collect){
+		List<Collect> collectList = collectService.findList(collect);
+		
+		return ResultGen.genSuccessResult(collectList);
+	}
+	
 	
 	@RequestMapping("list")
 	public ResultObject list(Adage adage){

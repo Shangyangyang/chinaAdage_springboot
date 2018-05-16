@@ -13,4 +13,23 @@ public class SearchHistoryService extends CrudService<SearchHistoryMapper, Searc
 	public List<SearchHistory> findListToSeven(SearchHistory sh){
 		return dao.findListToSeven(sh);
 	}
+	
+	/**
+	 * 添加搜索记录
+	 * @param sh
+	 */
+	public void addHistory(SearchHistory sh) {
+		sh.setContent(sh.getContent());
+		List<SearchHistory> shList = this.findList(sh);
+		if(shList.size() > 0) {
+			sh = shList.get(0);
+		} else {
+			sh.setCount(0);
+			sh.setState("0");
+		}
+		
+		sh.setCount(sh.getCount() + 1);
+		
+		this.save(sh);
+	}
 }

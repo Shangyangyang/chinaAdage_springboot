@@ -134,6 +134,8 @@ public class AdageController {
 	 */
 	@RequestMapping("addCollect")
 	public ResultObject addCollect(Collect colect){
+		List<Collect> collectList = collectService.findList(colect);
+		if(collectList.size() > 0) return ResultGen.genFailResult("已收藏");
 		collectService.save(colect);
 		return ResultGen.genSuccessResult();
 	}
